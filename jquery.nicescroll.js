@@ -365,8 +365,8 @@
       if (dd&&dd.last+tm>nw&&!dd.tt) {      
         self.delaylist[name] = {
           last:nw+tm,
-          tt:setTimeout(function(){if(self||false){self.delaylist[name].tt=0;fn.call()}},tm)
-        }
+          tt:setTimeout(function(){if(self){self.delaylist[name].tt=0;fn.call();}},tm)
+        };
       }
       else if (!dd||!dd.tt) {
         self.delaylist[name] = {
@@ -1855,8 +1855,8 @@
   
     this.onResize = function(e,page) {
     
-			if (!self||!self.win) return false;
-	
+      if (!self || !self.win) return false;
+  
       if (!self.haswrapper&&!self.ispage) {
         if (self.win.css('display')=='none') {
           if (self.visibility) self.hideRail().hideRailHr();
