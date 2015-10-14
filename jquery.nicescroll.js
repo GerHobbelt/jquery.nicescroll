@@ -1,6 +1,6 @@
 /* jquery.nicescroll
--- version 3.6.0 [RC8] 
--- copyright 2014-11-15 InuYaksa*2014
+-- version 3.6.0
+-- copyright 2014-11-21 InuYaksa*2014
 -- licensed under the MIT
 --
 -- http://nicescroll.areaaperta.com/
@@ -34,7 +34,6 @@
     var path = scripts[scripts.length - 1].src.split('?')[0];
     return (path.split('/').length > 0) ? path.split('/').slice(0, -1).join('/') + '/' : '';
   }
-  //  var scriptpath = getScriptPath();
 
   var vendors = ['webkit','ms','moz','o'];
 
@@ -229,7 +228,7 @@
 
     var self = this;
 
-    this.version = '3.6.0 [RC8]';
+    this.version = '3.6.0';
     this.name = 'nicescroll';
 
     this.me = me;
@@ -737,15 +736,9 @@
     };
 
     this.doRailClick = function(e, dbl, hr) {
-
       var fn, pg, cur, pos;
 
-      //      if (self.rail.drag&&self.rail.drag.pt!=1) return;
       if (self.railslocked) return;
-      //      if (self.rail.drag) return;
-
-      //      self.cancelScroll();       
-
       self.cancelEvent(e);
 
       if (dbl) {
@@ -799,14 +792,6 @@
       if (self.isie && self.zindex == 0 && self.opt.zindex == "auto") { // fix IE auto == 0
         self.zindex = "auto";
       }
-
-      /*      
-      self.ispage = true;
-      self.haswrapper = true;
-//      self.win = $(window);
-      self.docscroll = $("body");
-//      self.doc = $("body");
-*/
 
       if (!self.ispage || (!cap.cantouch && !cap.isieold && !cap.isie9mobile)) {
 
@@ -1071,7 +1056,7 @@
 
           if (cap.isie && self.opt.disableoutline) self.win.attr("hideFocus", "true"); // IE, prevent dotted rectangle on focused div
           if (cap.iswebkit && self.opt.disableoutline) self.win.css({"outline": "none"});  // Webkit outline
-          //if (cap.isopera&&self.opt.disableoutline) self.win.css({"outline":"0"});  // Opera to test [TODO]
+          //if (cap.isopera&&self.opt.disableoutline) self.win.css({"outline":"0"});  // Opera 12- to test [TODO]
 
         }
 
@@ -1104,33 +1089,11 @@
 
           self.scrollmom = new ScrollMomentumClass2D(self);
 
-          /*
-          var trace = function(msg) {
-            var db = $("#debug");
-            if (isNaN(msg)&&(typeof msg != "string")) {
-              var x = [];
-              for(var a in msg) {
-                x.push(a+":"+msg[a]);
-              }
-              msg ="{"+x.join(",")+"}";
-            }
-            if (db.children().length>0) {
-              db.children().eq(0).before("<div>"+msg+"</div>");
-            } else {
-              db.append("<div>"+msg+"</div>");
-            }
-          }
-          window.onerror = function(msg,url,ln) {
-            trace("ERR: "+msg+" at "+ln);
-          }
-*/
-
           self.onmangotouch = function() {
             var py = self.getScrollTop();
             var px = self.getScrollLeft();
 
             if ((py == self.scrollmom.lastscrolly) && (px == self.scrollmom.lastscrollx)) return true;
-            //            $("#debug").html('DRAG:'+py);
 
             var dfy = py - self.mangotouch.sy;
             var dfx = px - self.mangotouch.sx;
@@ -1144,7 +1107,6 @@
             if (self.mangotouch.lazy) clearTimeout(self.mangotouch.lazy);
 
             if (((tm - self.mangotouch.tm) > 80) || (self.mangotouch.dry != dry) || (self.mangotouch.drx != drx)) {
-              //              trace('RESET+'+(tm-self.mangotouch.tm));
               self.scrollmom.stop();
               self.scrollmom.reset(px, py);
               self.mangotouch.sy = py;
@@ -1161,15 +1123,12 @@
               //              var gap = tm - self.mangotouch.tm;              
               self.mangotouch.tm = tm;
 
-              //              trace('MOVE:'+df+" - "+gap);
-
               var ds = Math.max(Math.abs(self.mangotouch.ly - py), Math.abs(self.mangotouch.lx - px));
               self.mangotouch.ly = py;
               self.mangotouch.lx = px;
 
               if (ds > 2) {
                 self.mangotouch.lazy = setTimeout(function() {
-                  //                  trace('END:'+ds+'+'+gap);                  
                   self.mangotouch.lazy = false;
                   self.mangotouch.dry = 0;
                   self.mangotouch.drx = 0;
@@ -1287,7 +1246,7 @@
                 self.lastmouseup = false;
                 self.scrollmom.reset(e.clientX, e.clientY);
                 
-//                if (!cap.cantouch && !this.istouchcapable && !cap.hasmstouch) {
+                // if (!cap.cantouch && !this.istouchcapable && !cap.hasmstouch) {
                 if (!cap.cantouch && !this.istouchcapable && !e.pointerType) {       
                 
                   var ip = (tg) ? /INPUT|SELECT|TEXTAREA/i.test(tg.nodeName) : false;
@@ -1583,10 +1542,6 @@
               }
             }
 
-            //            self.onmousedown = self.ontouchstart;            
-            //            self.onmouseup = self.ontouchend;
-            //            self.onmousemove = self.ontouchmove;
-
             self.bind(self.win, "mousedown", self.ontouchstart); // control content dragging
 
             self.onclick = (cap.isios) ? false : function(e) {
@@ -1623,7 +1578,6 @@
               if (self.selectiondrag.df == 0) return;
 
               var rt = -Math.floor(self.selectiondrag.df / 6) * 2;
-              //              self.doScrollTop(self.getScrollTop(true)+rt);
               self.doScrollBy(rt);
 
               self.debounced("doselectionscroll", function() {
@@ -1984,7 +1938,7 @@
             mutations.forEach(function(mut){
               if (mut.type=="attributes") {
                 //if (mut.attributeName == 'class') 
-                return ($("body").hasClass("modal-open")) ? self.hide() : self.show();
+                return ($("body").hasClass("modal-open")) ? self.hide() : self.show();  // Support for Bootstrap modal
               }
             });  
             if (document.body.scrollHeight!=self.page.maxh) return self.lazyResize(30);
@@ -2232,7 +2186,7 @@
     this.onResize = function(e, page) {
     
       if (!self || !self.win) return false;
-	
+
       if (!self.haswrapper && !self.ispage) {
         if (self.win.css('display') == 'none') {
           if (self.visibility) self.hideRail().hideRailHr();
@@ -2761,7 +2715,6 @@
 
       e.stopImmediatePropagation();
       return e.preventDefault();
-      //      return self.cancelEvent(e);
     };
 
     this.onmousewheel = function(e) {
@@ -2787,7 +2740,6 @@
       var nw = +(new Date());
       var chk = false;
       if (self.opt.preservenativescrolling && ((self.checkarea + 600) < nw)) {
-        //        self.checkarea = false;
         self.nativescrollingarea = self.isScrollable(e);
         chk = true;
       }
@@ -2807,7 +2759,6 @@
       var nw = +(new Date());
       var chk = false;
       if (self.opt.preservenativescrolling && ((self.checkarea + 600) < nw)) {
-        //        self.checkarea = false;
         self.nativescrollingarea = self.isScrollable(e);
         chk = true;
       }
@@ -2909,9 +2860,6 @@
           dst.py = top;
 
           var dd = Math.round(Math.sqrt(Math.pow(dst.x, 2) + Math.pow(dst.y, 2)));
-
-          //          var df = (self.newscrollspeed) ? self.newscrollspeed : dd;
-
           var ms = (self.newscrollspeed && self.newscrollspeed > 1) ? self.newscrollspeed : self.getTransitionSpeed(dd);
           if (self.newscrollspeed && self.newscrollspeed <= 1) ms *= self.newscrollspeed;
 
@@ -2992,7 +2940,6 @@
 
         self.cursorfreezed = false;
 
-        //self.noticeCursor(false,py,px);
         self.showCursor(py, px);
         return self;
       };
@@ -3018,8 +2965,6 @@
         if ((py != self.newscrolly) || (px != self.newscrollx)) return self.doScrollPos(px, py, self.opt.snapbackspeed);
 
         if (self.onscrollend && self.scrollrunning) {
-          //          var info = {"type":"scrollend","current":{"x":px,"y":py},"end":{"x":self.newscrollx,"y":self.newscrolly}};
-          //          self.onscrollend.call(self,info);
           self.triggerScrollEnd();
         }
         self.scrollrunning = false;
@@ -3154,10 +3099,6 @@
             if ((scx != self.newscrollx) || (sc != self.newscrolly)) self.doScrollPos(scx, sc);
             else {
               if (self.onscrollend) {
-                /*							
-                var info = {"type":"scrollend","current":{"x":sx,"y":sy},"end":{"x":self.newscrollx,"y":self.newscrolly}};
-                self.onscrollend.call(self,info);
-*/
                 self.triggerScrollEnd();
               }
             }
