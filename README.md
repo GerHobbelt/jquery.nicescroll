@@ -63,7 +63,7 @@ Document (body) scrollbars can't appears, old (native browser) one is used. Some
 * INSTALLATION
 Put loading script tag after jquery script tag and loading the zoom image in the same folder of the script:
 
-<script src="jquery.nicescroll.js"></script>
+\<script src="jquery.nicescroll.js">\</script>
 
 Copy image "zoomico.png" in the same folder of jquery.nicescroll.js.
 
@@ -118,7 +118,7 @@ When you call "niceScroll" you can pass some parameters to custom visual aspects
         cursorwidth: "5px", // cursor width in pixel (you can also write "5px")
         cursorborder: "1px solid #fff", // css definition for cursor border
         cursorborderradius: "5px", // border radius in pixel for cursor
-        zindex: "auto" | <number>, // change z-index for scrollbar div
+        zindex: "auto" | \<number>, // change z-index for scrollbar div
         scrollspeed: 60, // scrolling speed
         mousescrollstep: 40, // scrolling speed with mouse wheel (pixel)
         touchbehavior: false, // enable cursor-drag scrolling like touch devices in desktop computer
